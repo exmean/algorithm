@@ -3,6 +3,10 @@ package example.personal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProgrammersTest {
@@ -60,5 +64,56 @@ public class ProgrammersTest {
 
         int expect = 4;
         assertEquals(expect, answer);
+    }
+
+    @Test
+    @DisplayName("프로그래머스 > 2019 KAKAO BLIND RECRUITMENT > 오픈채팅방")
+    public void solution3() {
+        // 채팅방에 들어오고 나가거나, 닉네임을 변경한 기록이 담긴 문자열 배열 record가 매개변수로 주어질 때,
+        // 모든 기록이 처리된 후, 최종적으로 방을 개설한 사람이 보게 되는 메시지를 문자열 배열 형태로 return 하도록 solution 함수를 완성하라.
+        String[] record = {
+                "Enter uid1234 Muzi",
+                "Enter uid4567 Prodo",
+                "Leave uid1234",
+                "Enter uid1234 Prodo",
+                "Change uid4567 Ryan"
+        };
+
+        final String ENTER_MESSAGE = "%s님이 들어왔습니다.";
+        final String LEAVE_MESSAGE = "%s님이 나갔습니다.";
+
+        List<String> message = new ArrayList<>();
+        String[] answer = {};
+
+        // 관리포인트
+        LinkedHashMap<String, String> manage = new LinkedHashMap<>();
+
+        // 닉네임 변경 로직
+        for (String line : record) {
+            String id = line.split(" ")[1];
+
+            // 닉네임 변경 후 다시 채팅방에 입장하는 인원도 변경이 적용된다.
+            if (line.contains("Enter")) {
+                String nickname = line.split(" ")[2];
+                manage.put(id, nickname);
+
+            } else if (line.contains("Change")) {
+                String newNickname = line.split(" ")[2];
+                manage.replace(id, newNickname);
+            }
+        }
+
+        // 출력 문자열
+        for (String line : record) {
+            String id = line.split(" ")[1];
+
+            if (line.contains("Enter")) {
+                message.add(String.format(ENTER_MESSAGE, manage.get(id)));
+            } else if (line.contains("Leave")) {
+                message.add(String.format(LEAVE_MESSAGE, manage.get(id)));
+            }
+        }
+
+        answer = message.toArray(new String[message.size()]);
     }
 }
