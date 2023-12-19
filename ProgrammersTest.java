@@ -1,57 +1,37 @@
 package example.personal;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProgrammersTest {
 
     @Test
+    @DisplayName("프로그래머스 > 2017 팁스타운 > 예상 대진표")
     void solution() {
-        int n = 8;
-        int a = 1;
-        int b = 2;
-        int answer = 0;
 
-        // [실행] 버튼을 누르면 출력 값을 볼 수 있습니다.
-        System.out.println("Hello Java");
+        int n = 256, a = 4, b = 6, answer = 0;
 
         // 가정: 항상 이김!
         // 결과: 몇 라운드에서 만날까?
 
-        // 상대방 번호(x: a 상대, y: b 상대)
-        // 라운드 변수: n
-        int r = 1;
-
         boolean loop = true;
         while (loop) {
-            int x = 0;
-            int y = 0;
+            // 라운드 시작!
+            answer++;
 
-            if (r == 1) {
-                if (a == 1) {
-                    x = r+1;
-                } else if (a == n) {
-                    x = n-1;
-                }
-
-                if (b == 1) {
-                    y = b+1;
-                } else if (b == n) {
-                    y = n-1;
-                }
-
-                // 1라운드에서 만난다면?
-                if (a == y || b == x) {
-                    answer = r;
-                    loop = false;
-                } else {
-                    r++;
-                }
+            // 번호가 2의 배수 일 때 상대방 번호를 확인한다.
+            if ((a % 2 == 0 && b == (a - 1)) || (b % 2 == 0 && a == (b - 1))) {
+                loop = false;
             }
+
+            // 다음 라운드로 넘어갈 시 새로운 번호를 부여받는다.
+            a = (a % 2) == 0 ? (a / 2) : (a / 2) + 1;
+            b = (b % 2) == 0 ? (b / 2) : (b / 2) + 1;
         }
 
-        int expect = 1;
+        int expect = 3;
         assertEquals(expect, answer);
     }
 }
