@@ -2,30 +2,26 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        int[] P = Arrays.stream(br.readLine().split(" "))
-            .mapToInt(Integer::parseInt)
-            .toArray();
+        int[] P = new int[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        if (N == 1) {
-            System.out.println(P[0]);
-        } else {
-            int time = 0;
-            int[] sort = Arrays.stream(P)
-                .sorted()
-                .toArray();
-
-            for ( int i = 0; i < sort.length; i++ ) {
-                time = ( time + sort[i] );
-                P[i] = time;
-            }
-
-            System.out.println(Arrays.stream(P).sum());
+        for ( int i = 0; i < N; i++ ) {
+            P[i] = Integer.parseInt(st.nextToken());
         }
+
+        Arrays.sort(P);
+        for ( int i = 0; i < P.length; i++ ) {
+            if ( i == 0 ) continue;
+            P[i] = (P[i-1] + P[i]);
+        }
+
+        System.out.println(Arrays.stream(P).sum());
     }
 }
